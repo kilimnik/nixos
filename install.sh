@@ -56,6 +56,7 @@ mkfs.ext4 -L root /dev/mapper/vgNix-root
 
 mount /dev/vgNix/root /mnt
 mkdir -p /mnt/boot/efi
+mount "$11" /mnt/boot/efi
 swapon /dev/vgNix/swap
 
 mkdir -p /mnt/etc/secrets/initrd/
@@ -65,4 +66,11 @@ chmod 000 /mnt/etc/secrets/initrd/keyfile*.bin
 nixos-generate-config --root /mnt
 
 nix-env -i git
-git clone https://github.com/kilimnik/nixos
+
+mv /mnt/etc/nixos/hardware-configuration.nix /tmp/
+rm -rf /mnt/etc/nixos/
+git clone https://github.com/kilimnik/nixos /mnt/etc/nixos/
+mv /tmp/hardware-configuration.nix /mnt/etc/nixos
+
+nixos-install
+reboot

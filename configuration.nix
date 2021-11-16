@@ -5,7 +5,7 @@
     [
       ./hardware-configuration.nix
 
-      <modules/boot.nix>
+      ./modules/boot.nix
     ];
 
   networking.hostName = "daniel-nix";
