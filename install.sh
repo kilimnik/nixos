@@ -41,7 +41,7 @@ mkfs.vfat "$11"
 parted -s $1 mkpart "primary" "1024MiB" "100%"
 
 dd if=/dev/urandom of=./keyfile-vgNix.bin bs=1024 count=4
-cryptsetup luksFormat -q -c aes-xts-plain64 -s 256 -h sha512 "$12"
+cryptsetup luksFormat -q --label crypt --type luks2 --pbkdf pbkdf2 -c aes-xts-plain64 -s 256 -h sha512 "$12"
 cryptsetup luksAddKey -q "$12" keyfile-vgNix.bin
 cryptsetup luksOpen -q "$12" cryptlvm -d keyfile-vgNix.bin
 
