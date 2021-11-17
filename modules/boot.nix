@@ -14,7 +14,7 @@
 
   boot.initrd = {
     luks.devices."root" = {
-      device = "/dev/disk/by-label/root";
+      device = "/dev/disk/by-partlabel/crypt";
       preLVM = true;
       keyFile = "/keyfile-vgNix.bin";
       allowDiscards = true;
