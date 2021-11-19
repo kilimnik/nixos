@@ -1,22 +1,37 @@
 { config, pkgs, ... }:
 
 {
+  nix = {
+    package = pkgs.nixFlakes;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+  };
+
   imports =
     [
       ./hardware-configuration.nix
+      ./overlay
 
       ./modules/boot.nix
+      ./modules/daniel.nix
+      ./modules/packages.nix
+      ./modules/fonts.nix
+      ./modules/xserver.nix
+      ./modules/networking.nix
+      ./modules/sound.nix
     ];
 
-  networking.hostName = "daniel-nix";
-
   time.timeZone = "Europe/Berlin";
+  users.defaultUserShell = pkgs.zsh;
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
   networking.interfaces.enp1s0.useDHCP = true;
+
+  environment.pathsToLink = [ "/share/zsh" ];
 
   # Select internationalisation properties.
   # i18n.defaultLocale = "en_US.UTF-8";
@@ -38,18 +53,8 @@
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
-  # Enable sound.
-  # sound.enable = true;
-  # hardware.pulseaudio.enable = true;
-
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  # users.users.jane = {
-  #   isNormalUser = true;
-  #   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-  # };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
