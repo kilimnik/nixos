@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 help() {
     echo "$0 <drive>"
     exit 0
